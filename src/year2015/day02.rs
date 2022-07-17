@@ -1,4 +1,4 @@
-use crate::util::function;
+use crate::util::solution;
 
 const INPUT: &str = "29x13x26
 11x11x14
@@ -1002,8 +1002,6 @@ const INPUT: &str = "29x13x26
 10x9x8";
 
 fn solution_1() {
-    function!();
-
     let mut total = 0;
     for line in INPUT.lines() {
         let sides = line
@@ -1021,12 +1019,10 @@ fn solution_1() {
         let area = 2 * (a + b + c) + a.min(b).min(c);
         total += area;
     }
-    println!("{}", total);
+    solution!(total);
 }
 
 fn solution_2() {
-    function!();
-
     let mut total = 0;
     for line in INPUT.lines() {
         let sides = line
@@ -1042,7 +1038,7 @@ fn solution_2() {
         let ribbon = (l + w).min(l + h).min(w + h) * 2;
         total += bow + ribbon;
     }
-    println!("{}", total);
+    solution!(total);
 }
 
 pub fn run_day() {
