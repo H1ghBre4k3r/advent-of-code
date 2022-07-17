@@ -1008,9 +1008,9 @@ fn check_rule_one(ln: &str) -> bool {
     return re.is_match(ln.as_bytes());
 }
 
-fn check_rule_two(ln: &str) -> bool {
+fn generic_rule_two_or_five(ln: &str, distance: usize) -> bool {
     for (i, c) in ln.chars().enumerate() {
-        match ln.chars().nth(i + 1) {
+        match ln.chars().nth(i + distance) {
             None => (),
             Some(other) => {
                 if other == c {
@@ -1022,9 +1022,38 @@ fn check_rule_two(ln: &str) -> bool {
     return false;
 }
 
+fn check_rule_two(ln: &str) -> bool {
+    generic_rule_two_or_five(ln, 1)
+}
+
 fn check_rule_three(ln: &str) -> bool {
     let re = Regex::new(r"^.*(ab|cd|pq|xy).*$").unwrap();
     return !re.is_match(ln.as_bytes());
+}
+
+fn check_rule_four(ln: &str) -> bool {
+    for (i, x) in ln.chars().enumerate() {
+        match ln.chars().nth(i + 1) {
+            Some(y) => {
+                for (j, a) in ln[i + 2..].chars().enumerate() {
+                    if x == a
+                        && match ln.chars().nth(i + 3 + j) {
+                            Some(b) => y == b,
+                            _ => false,
+                        }
+                    {
+                        return true;
+                    }
+                }
+            }
+            None => (),
+        }
+    }
+    false
+}
+
+fn check_rule_five(ln: &str) -> bool {
+    generic_rule_two_or_five(ln, 2)
 }
 
 fn solution_1() {
@@ -1039,13 +1068,27 @@ fn solution_1() {
     solution!(nice);
 }
 
+fn solution_2() {
+    let lines = INPUT.split('\n').collect::<Vec<_>>();
+    let nice = lines.iter().fold(0, |memo, &line| {
+        if check_rule_four(line) && check_rule_five(line) {
+            memo + 1
+        } else {
+            memo
+        }
+    });
+    solution!(nice);
+}
+
 pub fn run_day() {
     solution_1();
+    solution_2();
 }
 
 #[cfg(test)]
 mod tests {
-    use super::{check_rule_one, check_rule_three, check_rule_two};
+
+    use super::*;
 
     #[test]
     fn test_rule_one() {
@@ -1063,5 +1106,21 @@ mod tests {
     #[test]
     fn test_rule_three() {
         assert!(!check_rule_three("haegwjzuvuyypxyu"));
+    }
+
+    #[test]
+    fn test_rule_four() {
+        assert!(check_rule_four("qjhvhtzxzqqjkmpb"));
+        assert!(check_rule_four("xxyxx"));
+        assert!(check_rule_four("uurcxstgmygtbstg"));
+        assert!(!check_rule_four("ieodomkazucvgmuy"));
+    }
+
+    #[test]
+    fn test_roule_five() {
+        assert!(check_rule_five("qjhvhtzxzqqjkmpb"));
+        assert!(check_rule_five("xxyxx"));
+        assert!(!check_rule_five("uurcxstgmygtbstg"));
+        assert!(check_rule_five("ieodomkazucvgmuy"));
     }
 }
