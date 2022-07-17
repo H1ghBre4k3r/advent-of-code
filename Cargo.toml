@@ -8,3 +8,4 @@ authors = ["Louis Meyer (H1ghBre4k3r) <h1ghbre4k3r@dev.bre4k3r.de>"]
 
 [dependencies]
 md5 = "0.7.0"
+regex = "1.6.0"

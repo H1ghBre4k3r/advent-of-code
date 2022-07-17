@@ -1,6 +1,6 @@
 use crate::util::solution;
 
-static INPUT: &str = "ckczppom";
+const INPUT: &str = "ckczppom";
 
 fn find_digest_starting_with(prefix: &str) -> i32 {
     let mut suffix = 1;
