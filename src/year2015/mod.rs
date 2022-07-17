@@ -3,6 +3,7 @@ pub mod day02;
 pub mod day03;
 pub mod day04;
 pub mod day05;
+pub mod day06;
 
 pub fn run_year() {
     day01::run_day();
@@ -10,4 +11,5 @@ pub fn run_year() {
     day03::run_day();
     day04::run_day();
     day05::run_day();
+    day06::run_day();
 }
